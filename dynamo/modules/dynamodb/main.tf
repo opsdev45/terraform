@@ -15,6 +15,10 @@ resource "aws_dynamodb_table" "dynamodb_table" {
         name = var.range_key
         type = var.range_key_type
     }
+    attribute {
+        name = var.gsi_name
+        type = var.gsi_type
+    }
 
     server_side_encryption {
         enabled     = true

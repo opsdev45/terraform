@@ -12,6 +12,7 @@ variable "kms_key_arn" {
     sensitive = true
 }
 
+variable "gsi_type" {}
 variable "gsi_name" {}
 variable "gsi_hash_key" {}
 variable "gsi_range_key" {}
