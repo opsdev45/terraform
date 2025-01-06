@@ -7,6 +7,11 @@ variable "hash_key_type" {}
 variable "range_key" {}
 variable "range_key_type" {}
 
+variable "kms_key_arn" {
+    type        = string
+    sensitive = true
+}
+
 variable "gsi_name" {}
 variable "gsi_hash_key" {}
 variable "gsi_range_key" {}

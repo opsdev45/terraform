@@ -18,7 +18,11 @@ resource "aws_dynamodb_table" "dynamodb_table" {
 
     server_side_encryption {
         enabled     = true
-        kms_key_arn = aws_kms_key.dynamodb_key.arn
+        kms_key_arn = var.kms_key_arn
+        
+    }
+    lifecycle {
+        ignore_changes = [read_capacity,write_capacity]
     }
 
     global_secondary_index {

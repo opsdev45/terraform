@@ -12,6 +12,7 @@ module "dynamodb" {
     hash_key_type               = "S"
     range_key                   = "GameTitle"
     range_key_type              = "S"
+    kms_key_arn = ""
 
     gsi_name                    = "GameTitleIndex"
     gsi_hash_key                = "GameTitle"
