@@ -15,9 +15,13 @@ resource "aws_dynamodb_table" "dynamodb_table" {
         name = var.range_key
         type = var.range_key_type
     }
-    attribute {
-        name = var.gsi_name
-        type = var.gsi_type
+
+    dynamic "attribute" {
+        for_each = var.gsis != null ? var.gsis : []
+        content {
+            name = each.value.gsi_range_key
+            type = each.value.gsi_range_key_type
+        }
     }
 
     server_side_encryption {
@@ -29,15 +33,32 @@ resource "aws_dynamodb_table" "dynamodb_table" {
         ignore_changes = [read_capacity,write_capacity]
     }
 
-    global_secondary_index {
-        name               = var.gsi_name
-        hash_key           = var.gsi_hash_key
-        range_key          = var.gsi_range_key
-        write_capacity     = var.gsi_write_capacity
-        read_capacity      = var.gsi_read_capacity
-        projection_type    = var.gsi_projection_type
-        non_key_attributes = var.gsi_non_key_attributes
+    point_in_time_recovery {
+        enabled = true
     }
+
+    dynamic "global_secondary_index" {
+        for_each = var.gsis != null ? var.gsis : []
+        content {
+            name               = each.value.gsi_name
+            hash_key           = each.value.gsi_hash_key
+            range_key          = each.value.gsi_range_key
+            write_capacity     = each.value.gsi_write_capacity
+            read_capacity      = each.value.gsi_read_capacity
+            projection_type    = each.value.gsi_projection_type
+            non_key_attributes = each.value.gsi_non_key_attributes
+        }
+    }
+    
+    # dynamic "replica" {
+    #     for_each = var.replicas != null ? var.replicas : []
+    #     content {
+    #         region_name = each.value.region_name
+            
+    #         read_capacity  = each.value.read_capacity
+    #         write_capacity = each.value.write_capacity
+    #     }
+    # }
 
     tags = var.tags
 }

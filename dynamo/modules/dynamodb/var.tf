@@ -12,15 +12,30 @@ variable "kms_key_arn" {
     sensitive = true
 }
 
-variable "gsi_type" {}
-variable "gsi_name" {}
-variable "gsi_hash_key" {}
-variable "gsi_range_key" {}
-variable "gsi_write_capacity" {}
-variable "gsi_read_capacity" {}
-variable "gsi_projection_type" {}
-variable "gsi_non_key_attributes" {}
+variable "gsis" {
+    description = "List of GSIs to create"
+    type = list(object({
+        gsi_name             = string
+        gsi_hash_key         = string
+        gsi_range_key        = string
+        gsi_range_key_type   = string
+        gsi_write_capacity   = number
+        gsi_read_capacity    = number
+        gsi_projection_type  = string
+        gsi_non_key_attributes = list(string)
+    }))
+    default = []
+}
 
+# variable "replicas" {
+#     description = "List of replicas to create"
+#     type = list(object({
+#         region_name      = string
+#         read_capacity    = number
+#         write_capacity   = number
+#     }))
+#     default = []
+# }
 
 variable "read_max_capacity" {}
 variable "read_min_capacity" {}

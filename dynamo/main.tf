@@ -14,14 +14,37 @@ module "dynamodb" {
     range_key_type              = "S"
     kms_key_arn                 = ""
 
-    gsi_type                    = "N"
-    gsi_name                    = "GameTitleIndex"
-    gsi_hash_key                = "GameTitle"
-    gsi_range_key               = "TopScore"
-    gsi_write_capacity          = 10
-    gsi_read_capacity           = 10
-    gsi_projection_type         = "INCLUDE"
-    gsi_non_key_attributes      = ["UserId"]
+    gsis = [
+    {
+    gsi_name             = "GSI1"
+    gsi_hash_key         = "hash_key_1"
+    gsi_range_key        = "range_key_1"
+    gsi_range_key_type   = "S"
+    gsi_write_capacity   = 5
+    gsi_read_capacity    = 5
+    gsi_projection_type  = "ALL"
+    gsi_non_key_attributes = []
+    },
+    {
+    gsi_name             = "GSI2"
+    gsi_hash_key         = "hash_key_2"
+    gsi_range_key        = "range_key_2"
+    gsi_range_key_type   = "S"
+    gsi_write_capacity   = 5
+    gsi_read_capacity    = 5
+    gsi_projection_type  = "ALL"
+    gsi_non_key_attributes = []
+    }
+    ]
+    
+    # replicas = [
+    #     {
+    #         region_name    = "eu-west-1"
+    #         read_capacity  = 5
+    #         write_capacity = 5
+    #     }
+    # ]
+
 
     read_max_capacity           = 20
     read_min_capacity           = 5
