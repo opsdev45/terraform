@@ -39,11 +39,11 @@ module "dynamodb" {
     }
     ]
     
-    replicas = [
-        {
-            region_name    = "eu-west-1"
-        }
-    ]
+    # replicas = [
+    #     {
+    #         region_name    = "eu-west-1"
+    #     }
+    # ]
 
 
     read_max_capacity           = 20

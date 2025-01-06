@@ -28,13 +28,13 @@ variable "gsis" {
     default = []
 }
 
-variable "replicas" {
-    description = "List of replicas to create"
-    type = list(object({
-        region_name      = string
-    }))
-    default = []
-}
+# variable "replicas" {
+#     description = "List of replicas to create"
+#     type = list(object({
+#         region_name      = string
+#     }))
+#     default = []
+# }
 variable "stream_type" {
     type = string
     default = "NEW_AND_OLD_IMAGES"

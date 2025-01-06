@@ -60,27 +60,16 @@ resource "aws_dynamodb_table" "dynamodb_table" {
         }
     }
 
+    # dynamic "replica" {
+    #     for_each = var.replicas != null ? var.replicas : []
+    #     content {
+    #         region_name = replica.value.region_name
 
+      
+    #     }
     tags = var.tags
 }
-resource "aws_dynamodb_replica_tables" "replica" {
-    # We use depends_on and reference back to the original table ARN to ensure
-    # that this resource will be created only after the original table, plus its
-    # auto-scaling rules, have already been created
-    depends_on = [
-        aws_appautoscaling_target.write_target,
-        aws_appautoscaling_policy.write_policy,
-    ]
 
-    original_table_arn = aws_dynamodb_table.dynamodb_table.arn
-
-    dynamic "region" {
-        for_each = var.replicas != null ? var.replicas : []
-        content {
-        region_name = region.value.region_name
-        }
-    }
-}
 
 
 resource "aws_appautoscaling_target" "read_target" {
