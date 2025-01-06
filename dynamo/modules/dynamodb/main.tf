@@ -19,8 +19,15 @@ resource "aws_dynamodb_table" "dynamodb_table" {
     dynamic "attribute" {
         for_each = var.gsis != null ? var.gsis : []
         content {
-            name = each.value.gsi_range_key
-            type = each.value.gsi_range_key_type
+            name = attribute.value.gsi_range_key
+            type = attribute.value.gsi_range_key_type
+        }
+    }
+    dynamic "attribute" {
+        for_each = var.gsis != null ? var.gsis : []
+        content {
+            name = attribute.value.gsi_hash_key
+            type = attribute.value.gsi_hash_key_type
         }
     }
 
@@ -36,29 +43,30 @@ resource "aws_dynamodb_table" "dynamodb_table" {
     point_in_time_recovery {
         enabled = true
     }
+    
+    stream_enabled = true
+    stream_view_type = var.stream_type
 
     dynamic "global_secondary_index" {
         for_each = var.gsis != null ? var.gsis : []
         content {
-            name               = each.value.gsi_name
-            hash_key           = each.value.gsi_hash_key
-            range_key          = each.value.gsi_range_key
-            write_capacity     = each.value.gsi_write_capacity
-            read_capacity      = each.value.gsi_read_capacity
-            projection_type    = each.value.gsi_projection_type
-            non_key_attributes = each.value.gsi_non_key_attributes
+            name               = global_secondary_index.value.gsi_name
+            hash_key           = global_secondary_index.value.gsi_hash_key
+            range_key          = global_secondary_index.value.gsi_range_key
+            write_capacity     = global_secondary_index.value.gsi_write_capacity
+            read_capacity      = global_secondary_index.value.gsi_read_capacity
+            projection_type    = global_secondary_index.value.gsi_projection_type
+            non_key_attributes = global_secondary_index.value.gsi_non_key_attributes
         }
     }
     
-    # dynamic "replica" {
-    #     for_each = var.replicas != null ? var.replicas : []
-    #     content {
-    #         region_name = each.value.region_name
+    dynamic "replica" {
+        for_each = var.replicas != null ? var.replicas : []
+        content {
+            region_name = replica.value.region_name
             
-    #         read_capacity  = each.value.read_capacity
-    #         write_capacity = each.value.write_capacity
-    #     }
-    # }
+        }
+    }
 
     tags = var.tags
 }

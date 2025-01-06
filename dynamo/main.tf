@@ -18,6 +18,7 @@ module "dynamodb" {
     {
     gsi_name             = "GSI1"
     gsi_hash_key         = "hash_key_1"
+    gsi_hash_key_type    = "S"
     gsi_range_key        = "range_key_1"
     gsi_range_key_type   = "S"
     gsi_write_capacity   = 5
@@ -28,6 +29,7 @@ module "dynamodb" {
     {
     gsi_name             = "GSI2"
     gsi_hash_key         = "hash_key_2"
+    gsi_hash_key_type    = "S"
     gsi_range_key        = "range_key_2"
     gsi_range_key_type   = "S"
     gsi_write_capacity   = 5
@@ -37,13 +39,11 @@ module "dynamodb" {
     }
     ]
     
-    # replicas = [
-    #     {
-    #         region_name    = "eu-west-1"
-    #         read_capacity  = 5
-    #         write_capacity = 5
-    #     }
-    # ]
+    replicas = [
+        {
+            region_name    = "eu-west-1"
+        }
+    ]
 
 
     read_max_capacity           = 20

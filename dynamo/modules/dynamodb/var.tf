@@ -17,6 +17,7 @@ variable "gsis" {
     type = list(object({
         gsi_name             = string
         gsi_hash_key         = string
+        gsi_hash_key_type    = string
         gsi_range_key        = string
         gsi_range_key_type   = string
         gsi_write_capacity   = number
@@ -27,16 +28,18 @@ variable "gsis" {
     default = []
 }
 
-# variable "replicas" {
-#     description = "List of replicas to create"
-#     type = list(object({
-#         region_name      = string
-#         read_capacity    = number
-#         write_capacity   = number
-#     }))
-#     default = []
-# }
+variable "replicas" {
+    description = "List of replicas to create"
+    type = list(object({
+        region_name      = string
+    }))
+    default = []
+}
+variable "stream_type" {
+    type = string
+    default = "NEW_AND_OLD_IMAGES"
 
+}
 variable "read_max_capacity" {}
 variable "read_min_capacity" {}
 variable "read_target_value" {}
